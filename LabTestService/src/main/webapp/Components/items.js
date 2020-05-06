@@ -14,7 +14,7 @@ $(document).on("click", "#btnSave", function(event)
 	$("#alertError").hide();
 	
 	// Form validation-------------------
-	var status = validateItemForm();
+	var status = validateTestForm();
 	
 	if (status != true)
 	{
@@ -24,11 +24,11 @@ $(document).on("click", "#btnSave", function(event)
 	}
 	
 	// If valid------------------------
-	var method = ($("#hidItemIDSave").val() == "") ? "POST" : "PUT";
+	var method = ($("#IDSave").val() == "") ? "POST" : "PUT";
 	
 	$.ajax(
 	{
-		url : "ItemsAPI",
+		url : "TestsAPI",
 		type : method,
 		data : $("#formItem").serialize(),
 		dataType : "text",
@@ -67,7 +67,7 @@ function onItemSaveComplete(response, status)
 		$("#alertError").show();
 	}
 	
-	$("#hidItemIDSave").val("");
+	$("#IDSave").val("");
 	$("#formItem")[0].reset();
 }
 
@@ -75,7 +75,7 @@ function onItemSaveComplete(response, status)
 //UPDATE==========================================
 $(document).on("click", ".btnUpdate", function(event)
 {
-	$("#hidItemIDSave").val($(this).closest("tr").find('#hidItemIDUpdate').val());
+	$("#IDSave").val($(this).closest("tr").find('#IDUpdate').val());
 	$("#testName").val($(this).closest("tr").find('td:eq(0)').text());
 	$("#testCost").val($(this).closest("tr").find('td:eq(1)').text());
 	$("#testDesc").val($(this).closest("tr").find('td:eq(2)').text());
@@ -89,7 +89,7 @@ $(document).on("click", ".btnRemove", function(event)
 {
 	$.ajax(
 	{
-		url : "ItemsAPI",
+		url : "TestsAPI",
 		type : "DELETE",
 		data : "itemID=" + $(this).data("itemid"),
 		dataType : "text",
@@ -131,7 +131,7 @@ function onItemDeleteComplete(response, status)
 }
 
 
-function validateItemForm()
+function validateTestForm()
 {
 	//name
 	if ($("#testName").val().trim() == "")
@@ -170,7 +170,7 @@ function validateItemForm()
 	// DESCRIPTION------------------------
 	if ($("#testDesc").val().trim() == "")
 	{
-		return "Insert Item Description.";
+		return "Insert Test Description.";
 	}
 	
 	return true;

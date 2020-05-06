@@ -25,4 +25,14 @@
     <servlet-name>TestAPI</servlet-name>
     <url-pattern>/TestAPI</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>itemAPI</display-name>
+    <servlet-name>itemAPI</servlet-name>
+    <servlet-class>com.itemAPI</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>itemAPI</servlet-name>
+    <url-pattern>/itemAPI</url-pattern>
+  </servlet-mapping>
 </web-app>

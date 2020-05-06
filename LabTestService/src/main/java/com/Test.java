@@ -3,7 +3,7 @@ package com;
 import java.sql.*;
 
 
-public class item {
+public class Test {
 
 	private Connection connect(){
 		
@@ -23,7 +23,7 @@ public class item {
 	
 	//insert-----------------------------------------------------------------------------------------------------------------------------
 	
-	public String insertItem(String name, String price, String desc , String labNo , String hosName)
+	public String insertTest(String name, String price, String desc , String labNo , String hosName)
     {
 			String output = "";
 			try
@@ -50,12 +50,12 @@ public class item {
 				preparedStmt.execute();
 				con.close();
 				
-				String newItems = readItems();
-				output = "{\"status\":\"success\", \"data\": \"" +newItems + "\"}";
+				String newTests = readAllTests();
+				output = "{\"status\":\"success\", \"data\": \"" +newTests + "\"}";
 			}
 				catch (Exception e)
 			{
-					output = "{\"status\":\"error\", \"data\": \"Error while inserting the item.\"}";
+					output = "{\"status\":\"error\", \"data\": \"Error while inserting the test.\"}";
 					System.err.println(e.getMessage());
 			}
 			return output;
@@ -63,7 +63,7 @@ public class item {
 	
 	
 	//view------------------------------------------------------------------------------------------------------------------------
-	public String readItems(){
+	public String readAllTests(){
 		
 		String output = "";
 			try{
@@ -73,7 +73,7 @@ public class item {
 				return "Error while connecting to the database for reading."; 
 			}
 			// Prepare the html table to be displayed
-			output = "<table border='1'>"
+			output = "<table border='1' class='table'>"
 					+ "<tr><th>Test Name</th>"
 					+ "<th>Test Price</th>"
 					+ "<th>Test Description</th>"
@@ -97,7 +97,7 @@ public class item {
 
 				
 				// Add into the html table
-				output += "<tr><td><input id='hidItemIDUpdate'name='hidItemIDUpdate' type='hidden' value='" + testID+ "'>" 
+				output += "<tr><td><input id='IDUpdate'name='IDUpdate' type='hidden' value='" + testID+ "'>" 
 				+ testName + "</td>";
 				
 				output += "<td>" + testCost + "</td>";
@@ -110,6 +110,7 @@ public class item {
 						+ "value='Update'class='btnUpdate btn btn-secondary'></td>"
 						+ "<td><input name='btnRemove'type='button' "
 						+ "value='Remove'class='btnRemove btn btn-danger'data-itemid='"+ testID + "'>" + "</td></tr>";
+
 			}
 			
 			con.close();
@@ -117,7 +118,7 @@ public class item {
 			output += "</table>";
 			}
 			catch (Exception e){
-				output = "Error while reading the items.";
+				output = "Error while reading the tests.";
 				System.err.println(e.getMessage());
 			}
 			
@@ -127,7 +128,7 @@ public class item {
 	
 	
 	//update----------------------------------------------------------------------------------------------------------------
-	public String updateItem(String ID, String name, String cost, String desc, String labno, String hosName) {
+	public String updateTest(String ID, String name, String cost, String desc, String labno, String hosName) {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -149,10 +150,10 @@ public class item {
 			preparedStmt.execute();
 			con.close();
 			
-			String newItems = readItems();
-			output = "{\"status\":\"success\", \"data\": \"" + newItems + "\"}";;
+			String newTests = readAllTests();
+			output = "{\"status\":\"success\", \"data\": \"" + newTests + "\"}";;
 		} catch (Exception e) {
-			output = "{\"status\":\"error\", \"data\": \"Error while updating the item.\"}";
+			output = "{\"status\":\"error\", \"data\": \"Error while updating the test.\"}";
 			System.err.println(e.getMessage());
 		}
 		return output;
@@ -160,7 +161,7 @@ public class item {
 
 	
 	//delete-------------------------------------------------------------------------------------------------------------------
-	public String deleteItem(String testID) {
+	public String deleteTest(String testID) {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -177,10 +178,10 @@ public class item {
 			preparedStmt.execute();
 			con.close();
 			
-			String newItems = readItems();
-			output = "{\"status\":\"success\", \"data\": \"" + newItems + "\"}";
+			String newTests = readAllTests();
+			output = "{\"status\":\"success\", \"data\": \"" + newTests + "\"}";
 		} catch (Exception e) {
-			output = "{\"status\":\"error\", \"data\": \"Error while deleting the item.\"}";
+			output = "{\"status\":\"error\", \"data\": \"Error while deleting the test.\"}";
 			System.err.println(e.getMessage());
 		}
 		return output;

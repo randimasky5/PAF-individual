@@ -1,11 +1,11 @@
-<%@page import="com.item"%>
+<%@page import="com.Test"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Items Management</title>
+<title>Lab Test Srvice</title>
 
 <link rel="stylesheet" href="Views/bootstrap.min.css">
 <script src="Components/jquery-3.2.1.min.js"></script>
@@ -16,7 +16,7 @@
 <div class="container">
 	<div class="row" >
 		<div class="col-6">
-			<h1>Items Management V10.1</h1>
+			<h1>Lab Tests</h1>
 			
 			<form id="formItem" name="formItem" method="post" action="index.jsp">
 
@@ -41,7 +41,7 @@
 				<br>
 				
 				<input id="btnSave" name="btnSave" type="button" value="Save" class="btn btn-primary">
-				<input type="hidden" id="hidItemIDSave" name="hidItemIDSave" value="">
+				<input type="hidden" id="IDSave" name="IDSave" value="">
 			</form>
 			
 			<div id="alertSuccess" class="alert alert-success"></div>
@@ -50,8 +50,8 @@
 
 			<div id="divItemsGrid">
 				<%
-					item itemObj = new item();
-					out.print(itemObj.readItems());
+					Test Testobj = new Test();
+					out.print(Testobj.readAllTests());
 					
 				%>
 			</div>

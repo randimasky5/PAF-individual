@@ -1,21 +1,24 @@
 package com;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import helthcare.RMService.TestRepository;
-import helthcare.RMService.TestResource;
-
 /**
- * Servlet implementation class TestAPI
+ * Servlet implementation class ItemsAPI
  */
-@WebServlet("/TestServlet")
+@WebServlet("/TestsAPI")
 public class TestAPI extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	Test Testobj = new Test();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -29,16 +32,8 @@ public class TestAPI extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		String id = request.getParameter("searchid");
-		//<form action="TestServlet" method = 'post'><input type="text" name ="searchid"><button type="submit">search</button></form>
-        //System.out.println("username: " + id);
-       
-        TestRepository itemObj = new TestRepository();
-       // out.print(itemObj.getTestDetails());
-       itemObj.getTest( Integer.parseInt(id));
-       System.out.println( itemObj.getTest( Integer.parseInt(id)));
-		response.getWriter().append("Served at: "+itemObj.getTest( Integer.parseInt(id))).append(request.getContextPath());
+		
+		//NOT USED
 	}
 
 	/**
@@ -46,36 +41,68 @@ public class TestAPI extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		TestRepository test = new TestRepository();
-		String testname=request.getParameter("test_name");
-		String testcost =request.getParameter("test_cost");
-		String testdesc = request.getParameter("test_desc");
-		String roomNo =request.getParameter("room_no");
-		String hosp = request.getParameter("Hospital_name");
-		String output = test.insertTest(testname,testcost,testdesc,roomNo,hosp);
-		//System.out.println(testname);
-				response.getWriter().write(output);
+		String output = Testobj.insertTest(request.getParameter("testName"),  
+				   request.getParameter("testCost"),
+				   request.getParameter("testDesc"),
+				   request.getParameter("labNo"),
+		 		   request.getParameter("hosName"));
+
+		response.getWriter().write(output);
+	}
+
+	/**
+	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
+	 */
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		Map paras = getParasMap(request);
 		
+		String output = Testobj.updateTest(paras.get("IDSave").toString(),
+										   paras.get("testName").toString(),
+										   paras.get("testCost").toString(),
+										   paras.get("testDesc").toString(),
+										   paras.get("labNo").toString(),
+										   paras.get("hosName").toString());
+		
+		response.getWriter().write(output);
 	}
 
-	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	/**
+	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
+	 */
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("c de");
-		String id =req.getParameter("btnremove");
-		//String id =req.getParameter("id");
-		 TestRepository itemObj = new TestRepository();
-	       // out.print(itemObj.getTestDetails());
-	       itemObj.deleteTest(id);
-	       System.out.println("id"+id);
-	       resp.getWriter().append("Served at: "+id).append(req.getContextPath());
-		super.doDelete(req, resp);
-	}
-
-	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doPut(req, resp);
+		Map paras = getParasMap(request);
+		
+		String output = Testobj.deleteTest(paras.get("itemID").toString());
+		
+		response.getWriter().write(output);
 	}
 	
+	// Convert request parameters to a Map
+		private static Map getParasMap(HttpServletRequest request)
+		{
+			Map<String, String> map = new HashMap<String, String>();
+			
+			try
+			{
+				Scanner scanner = new Scanner(request.getInputStream(), "UTF-8");
+				String queryString = scanner.hasNext() ? scanner.useDelimiter("\\A").next() : "";
+				scanner.close();
+				
+				String[] params = queryString.split("&");
+				
+				for (String param : params)
+				{
+					String[] p = param.split("=");
+					map.put(p[0], p[1]);
+				}
+			}
+			catch (Exception e)
+			{
+			}
+			
+			return map;
+		}
+
 }
